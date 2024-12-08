@@ -1,0 +1,105 @@
+person-laptop-mockup/
+├── assets/
+│   ├── images/
+│   │   ├── laptops/
+│   │   ├── people/
+│   │   └── ...
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
+├── index.php (or index.html for static version)
+├── upload.php (for handling image uploads, if integrating a backend)
+└── README.md
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person & Laptop Mockup</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="mockup-container">
+        <div class="person-container">
+            <img id="person-img" src="assets/images/people/person1.jpg" alt="Person">
+            <div class="options">
+                <h4>Person:</h4>
+                <select id="person-select">
+                    <option value="person1.jpg">Person 1</option>
+                    <option value="person2.jpg">Person 2</option>
+                    <!-- Add more options here -->
+                </select>
+            </div>
+        </div>
+        <div class="laptop-container">
+            <img id="laptop-img" src="assets/images/laptops/laptop1.jpg" alt="Laptop">
+            <div class="options">
+                <h4>Laptop:</h4>
+                <select id="laptop-select">
+                    <option value="laptop1.jpg">Laptop 1</option>
+                    <option value="laptop2.jpg">Laptop 2</option>
+                    <!-- Add more options here -->
+                </select>
+            </div>
+        </div>
+        <!-- If integrating backend, add an upload form here -->
+    </div>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.mockup-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 90vh;
+    padding: 0 20vw;
+}
+
+.person-container, .laptop-container {
+    text-align: center;
+}
+
+.person-container img, .laptop-container img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 20px;
+}
+
+.options {
+    margin-top: 10px;
+}
+
+select {
+    padding: 5px;
+    font-size: 16px;
+}
+document.getElementById('person-select').addEventListener('change', function() {
+    document.getElementById('person-img').src = `assets/images/people/${this.value}`;
+});
+
+document.getElementById('laptop-select').addEventListener('change', function() {
+    document.getElementById('laptop-img').src = `assets/images/laptops/${this.value}`;
+});
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_FILES['uploaded_image'])) {
+        $errors = array();
+        $file_name = $_FILES['uploaded_image']['name'];
+        $file_size = $_FILES['uploaded_image']['size'];
+        $file_tmp = $_FILES['uploaded_image']['tmp_name'];
+        $file_type = $_FILES['uploaded_image']['type'];
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+        $extensions = array("jpeg","jpg","png");
+
+        if(in_array($file_ext,$extensions)=== false){
+            $errors[]="extension not allowed,
